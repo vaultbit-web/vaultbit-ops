@@ -21,11 +21,27 @@ A **real internal CRM running in production** for Vaultbit (Bitcoin custody & in
 
 ## Security decisions
 
-- **Magic-link auth + email allowlist**, enforced both in middleware and post-auth in Server Components (`src/lib/auth/allowlist.ts`) — defense in depth, not UI-only.
-- **RLS everywhere**: every migration ships its policies; the app runs with the anon/user key and can only do what RLS allows. The n8n watcher writes through PostgREST with a service-role credential that never touches this codebase (e.g. `2026-07-12-job-offers-rls-hardening.sql` restricts the app to SELECT/UPDATE).
+- **Magic-link auth + email allowlist**, enforced in middleware and post-auth in Server Components (`src/lib/auth/allowlist.ts`); self-service signup is disabled at the login form and in Auth config.
+- **RLS on every table**: each migration ships its policies. The app runs with the anon/user key; the n8n watcher writes through PostgREST with a service-role credential that never touches this codebase. Per-identity RLS hardening (binding write access to the operator's verified identity, not just the `authenticated` role) is tracked as an explicit follow-up — see the migration comments.
 - Outbound email goes through an n8n webhook so SMTP credentials never live in the app.
 - Cal.com webhook ingestion is **HMAC-verified**; rate limiting and timing-safe comparisons on sensitive endpoints.
 - This snapshot was produced by a publishing gate that redacts infrastructure identifiers and hard-fails on any secret/PII pattern.
+
+## Screenshots
+
+The console is not runnable without a configured Supabase project, so these are captures from the running instance. **Sensitive fields (personal email, third-party lead names, internal pricing and business figures) are covered with opaque redaction bars — the underlying pixels are destroyed, not blurred.**
+
+![Dashboard — 30-day operational overview: leads, funnel conversion, pending tasks, recent activity](docs/01-dashboard.png)
+*Dashboard: 30-day KPIs (leads, funnel sessions, conversion), task list and a live activity feed across lead sources.*
+
+![Pricing engine — editable base tiers and add-ons per service line](docs/02-tarifas-motor-precios.png)
+*Pricing engine: base tiers and modifiers per service line, edited in-place and applied instantly to the quote calculator (net amounts, VAT added at quote time).*
+
+![Job radar — Web3/AI/security offers scored against the operator profile](docs/03-radar-empleo.png)
+*Job radar: remote/Barcelona Web3-AI-security offers captured by the n8n watcher (23 sources, 2×/day), scored 0–100 against a profile, with per-offer triage state.*
+
+![90-day acquisition workspace — plan progress, weekly focus, partner actions and events](docs/04-captacion-90-dias.png)
+*90-day acquisition workspace: plan progress, weekly focus, partner actions and upcoming events, wired to the partners/events/backlog boards.*
 
 ## How it was built
 

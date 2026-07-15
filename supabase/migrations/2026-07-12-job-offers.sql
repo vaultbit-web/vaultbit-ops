@@ -1,7 +1,7 @@
 -- ============================================================
 -- Tablero de empleos · pestaña /empleo en Ops
 -- Alimentada por el workflow n8n "EMPLEO — Alertas Web3/IA/Seguridad"
--- (id P1YmFsvmtFtUMOvO): upsert por link con service_role.
+-- (id N8N_WORKFLOW_ID): upsert por link con service_role.
 -- Proyecto Supabase: YOUR-PROJECT-REF (VaultBit Asesoría)
 -- ============================================================
 --

@@ -33,7 +33,7 @@ COPY ops/ ./
 # el navegador intenta hablar con `placeholder.supabase.co` y falla.
 ARG NEXT_PUBLIC_SUPABASE_URL
 ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
-ARG NEXT_PUBLIC_APP_URL=https://app.vaultbit.es
+ARG NEXT_PUBLIC_APP_URL=https://app.example.com
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}

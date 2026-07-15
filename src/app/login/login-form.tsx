@@ -47,7 +47,11 @@ export function LoginForm({ initialError }: { initialError?: string }) {
         // Mantenemos el magic link funcional para escritorio.
         emailRedirectTo:
           typeof window !== "undefined" ? `${window.location.origin}/auth/callback` : undefined,
-        shouldCreateUser: true,
+        // NO provisionar identidades nuevas desde el login: el operador ya existe.
+        // Con true, cualquiera podía crearse un usuario 'authenticated' y (mientras la
+        // RLS autorice solo por rol) leer/escribir el CRM vía PostgREST saltándose la
+        // allowlist. Complementa a: desactivar signups en Supabase Auth + RLS por identidad.
+        shouldCreateUser: false,
       },
     });
     setPending(false);

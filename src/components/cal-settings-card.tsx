@@ -19,7 +19,7 @@ export async function CalSettingsCard() {
   const status = await getCalConnectionStatus();
   const eventTypes = status.connected ? await listEventTypes() : [];
   const webhookSecretSet = Boolean(process.env.CAL_COM_WEBHOOK_SECRET);
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://app.vaultbit.es";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://app.example.com";
   const webhookUrl = `${appUrl.replace(/\/$/, "")}/api/webhooks/cal`;
 
   return (
