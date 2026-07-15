@@ -1,0 +1,34 @@
+import { NextResponse } from "next/server";
+import { randomBytes } from "node:crypto";
+import { createClient } from "~/lib/supabase/server";
+import { isEmailAllowed } from "~/lib/auth/allowlist";
+import { buildAuthUrl } from "~/lib/oauth/google";
+
+export const dynamic = "force-dynamic";
+
+/**
+ * Inicia el flujo OAuth Google. Genera un `state` aleatorio, lo guarda en
+ * cookie HttpOnly, y redirige al usuario a Google.
+ */
+export async function GET() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user || !isEmailAllowed(user.email)) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  }
+
+  const state = randomBytes(24).toString("hex");
+  const url = buildAuthUrl(state);
+
+  const res = NextResponse.redirect(url);
+  res.cookies.set("google_oauth_state", state, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 600, // 10 min
+  });
+  return res;
+}

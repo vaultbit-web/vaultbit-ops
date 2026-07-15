@@ -1,0 +1,348 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────
+   VaultBit Design Tokens — extraídos 1:1 de VaultBit_Style_Guide.md
+   ───────────────────────────────────────────────────────── */
+
+@theme {
+  /* ── Familia anthracite (escala de oscuros) ── */
+  --color-anthracite-950: #0d0f11;
+  --color-anthracite-900: #13171a;
+  --color-anthracite-800: #1c2126;
+  --color-anthracite-700: #252c33;
+  --color-anthracite-600: #2e3740;
+  --color-anthracite-400: #4a5562;
+  --color-anthracite-200: #8a95a0;
+  --color-anthracite-100: #c5cbd1;
+
+  /* ── Familia naranja (acento principal) ── */
+  --color-brand-600: #d4620e;
+  --color-brand-500: #f2761a;
+  --color-brand-400: #f5883a;
+  --color-brand-100: #fef0e6;
+
+  /* ── Superficies claras ── */
+  --color-surface-light: #f8f9fa;
+
+  /* ── Semánticos de tema (texto primario + líneas) ──
+     Default = tema oscuro. El bloque [data-theme="light"] de abajo los
+     reasigna para el tema claro sin tocar ningún componente. */
+  --color-fg: #ffffff;
+  --color-hairline: rgba(46, 55, 64, 0.4);
+
+  /* ── Semánticos ── */
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-error: #dc2626;
+
+  /* ── Tipografía ── */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+
+  /* ── Radii ── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   Tema CLARO — overrides de tokens
+   Toda la UI usa la escala `anthracite-*` de forma consistente
+   (oscuros = superficie, claros = texto). Aquí reasignamos esas
+   variables CSS cuando <html data-theme="light">, de modo que las
+   ~830 utilidades (bg-anthracite-*, text-anthracite-*, border-…)
+   se invierten automáticamente. Especificidad de :root[data-theme]
+   gana a la de :root que emite @theme. Sin parpadeo (lo fija el SSR).
+   ───────────────────────────────────────────────────────── */
+
+:root[data-theme="light"] {
+  /* Superficies: 950 = fondo de app · 900 = sidebar/inputs/sub · 800 = cards/lift.
+     Mantiene la dirección del tema oscuro (la elevación aclara). */
+  --color-anthracite-950: #e8eaee;
+  --color-anthracite-900: #f2f4f6;
+  --color-anthracite-800: #ffffff;
+  --color-anthracite-700: #d6dbe1;
+  --color-anthracite-600: #e3e7ec;
+  /* Texto e iconos: 400 = atenuado · 200 = secundario · 100 = primario */
+  --color-anthracite-400: #6b7280;
+  --color-anthracite-200: #4b5563;
+  --color-anthracite-100: #1c2126;
+
+  /* Semánticos de tema */
+  --color-fg: #13171a;
+  --color-hairline: rgba(15, 23, 42, 0.1);
+
+  /* Acento naranja un punto más oscuro para contraste AA sobre claro */
+  --color-brand-400: #d4620e;
+}
+
+/* Utilidades hardcodeadas que asumían fondo oscuro — variante clara */
+:root[data-theme="light"] .grid-bg {
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+}
+
+:root[data-theme="light"] .card-dark {
+  border-color: var(--color-hairline);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 12px 28px -16px rgba(15, 23, 42, 0.18);
+}
+
+/* ─────────────────────────────────────────────────────────
+   Base + reset
+   ───────────────────────────────────────────────────────── */
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-hairline);
+  }
+
+  html {
+    background: var(--color-anthracite-950);
+    color: var(--color-anthracite-100);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Evita el delay de 300ms y el doble-tap-zoom en controles táctiles */
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  label {
+    touch-action: manipulation;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-anthracite-950);
+    color: var(--color-anthracite-100);
+    min-height: 100dvh;
+  }
+
+  ::selection {
+    background: rgba(242, 118, 26, 0.35);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-anthracite-950);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-anthracite-700);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-anthracite-600);
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font-family: inherit;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible,
+  button:focus-visible {
+    outline: 2px solid rgba(242, 118, 26, 0.5);
+    outline-offset: 2px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   Utilidades visuales VaultBit
+   ───────────────────────────────────────────────────────── */
+
+@layer utilities {
+  /* Glow naranja radial decorativo (ver Style Guide §9.3) */
+  .glow-orange {
+    position: relative;
+    isolation: isolate;
+  }
+  .glow-orange::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(ellipse at center, rgba(242, 118, 26, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Grid pattern de fondo (ver Style Guide §9.2) */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Border glow naranja para cards destacadas (Style Guide §9.4) */
+  .border-glow-orange {
+    border: 1px solid rgba(242, 118, 26, 0.4);
+    box-shadow:
+      0 0 20px rgba(242, 118, 26, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Card oscura principal (Style Guide §6.1) */
+  .card-dark {
+    background: var(--color-anthracite-800);
+    border: 1px solid rgba(46, 55, 64, 0.4);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Card secundaria (Style Guide §6.2) */
+  .card-dark-sub {
+    background: var(--color-anthracite-900);
+    border-radius: var(--radius-md);
+  }
+
+  /* Checkbox custom (selección bulk en tablas CRM) */
+  .vb-checkbox {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1.5px solid var(--color-anthracite-400);
+    background: var(--color-anthracite-900);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+  }
+  .vb-checkbox:hover {
+    border-color: var(--color-brand-500);
+  }
+  .vb-checkbox:checked {
+    background: var(--color-brand-500);
+    border-color: var(--color-brand-500);
+  }
+  .vb-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .vb-checkbox:indeterminate {
+    background: var(--color-brand-500);
+    border-color: var(--color-brand-500);
+  }
+  .vb-checkbox:indeterminate::after {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 6px;
+    width: 9px;
+    height: 2px;
+    background: white;
+  }
+  .vb-checkbox:focus-visible {
+    outline: 2px solid rgba(242, 118, 26, 0.5);
+    outline-offset: 2px;
+  }
+
+  /* Pulse animation para dots de estado activo */
+  @keyframes vb-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes vb-slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes vb-slide-left {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  /* El translate(-50%,-50%) del centrado del Dialog vive en el mismo
+     transform, por eso la keyframe lo incluye */
+  @keyframes vb-pop-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  @keyframes vb-pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.2);
+    }
+  }
+  .pulse-dot {
+    animation: vb-pulse 2s ease-in-out infinite;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   Animaciones de entrada para Dialog/Drawer (Radix).
+   Registradas con @utility para que admitan variantes (lg:).
+   Solo entrada: Radix desmonta al cerrar sin esperar animación.
+   ───────────────────────────────────────────────────────── */
+
+@utility vb-anim-overlay {
+  &[data-state="open"] {
+    animation: vb-fade-in 0.2s ease-out;
+  }
+}
+
+@utility vb-anim-sheet {
+  &[data-state="open"] {
+    animation: vb-slide-up 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+}
+
+@utility vb-anim-panel {
+  &[data-state="open"] {
+    animation: vb-slide-left 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+}
+
+@utility vb-anim-pop {
+  &[data-state="open"] {
+    animation: vb-pop-in 0.2s ease-out;
+  }
+}

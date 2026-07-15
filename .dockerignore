@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.env
+.env*.local
+.env.production
+.env.development
+README.md
+DEPLOY-CHECKLIST.md
+*.log
+.DS_Store
+Thumbs.db
+.vercel
+coverage
+.eslintcache
