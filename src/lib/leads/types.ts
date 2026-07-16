@@ -42,6 +42,14 @@ export const PIPELINE_ACTIVE_STATUSES: AuditLeadStatus[] = [
 
 export type MatchEngine = "heuristic" | "claude";
 
+export const LEAD_TYPES = ["vibe_app", "blockchain"] as const;
+export type LeadType = (typeof LEAD_TYPES)[number];
+
+export const LEAD_TYPE_LABELS: Record<LeadType, string> = {
+  vibe_app: "App IA",
+  blockchain: "Blockchain",
+};
+
 export const LEAD_BUILDERS = [
   "lovable",
   "bolt",
@@ -78,7 +86,7 @@ export interface AuditLead {
   stack: string[];
   signals: string[];
   auditability_score: number | null;
-  lead_type: "vibe_app" | "blockchain";
+  lead_type: LeadType;
   zona: LeadZona | null;
   language: string | null;
   score_claude: number | null;

@@ -18,6 +18,8 @@ import {
   AUDIT_LEAD_STATUS_LABELS,
   CONTACT_CHANNEL_LABELS,
   LEAD_BUILDERS,
+  LEAD_TYPES,
+  LEAD_TYPE_LABELS,
   LEAD_ZONAS,
   PIPELINE_ACTIVE_STATUSES,
   SCORE_LEVELS,
@@ -45,6 +47,7 @@ export function LeadsTable({ leads }: LeadsTableProps) {
   const [level, setLevel] = useState("all");
   const [builder, setBuilder] = useState("all");
   const [zona, setZona] = useState("all");
+  const [tipo, setTipo] = useState("all");
   const [status, setStatus] = useState("all");
   const [showStale, setShowStale] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -70,6 +73,7 @@ export function LeadsTable({ leads }: LeadsTableProps) {
       if (level !== "all" && scoreLevel(leadScore(l)) !== level) return false;
       if (builder !== "all" && (l.builder ?? "desconocido") !== builder) return false;
       if (zona !== "all" && l.zona !== zona) return false;
+      if (tipo !== "all" && l.lead_type !== tipo) return false;
       if (status !== "all" && st !== status) return false;
       if (needle) {
         const haystack = [l.product_name, l.founder, l.source]
@@ -81,7 +85,7 @@ export function LeadsTable({ leads }: LeadsTableProps) {
       return true;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [leads, q, level, builder, zona, status, showStale, localStatus]);
+  }, [leads, q, level, builder, zona, tipo, status, showStale, localStatus]);
 
   function clearLocal(id: string) {
     setLocalStatus((prev) => {
@@ -164,6 +168,19 @@ export function LeadsTable({ leads }: LeadsTableProps) {
             ))}
           </select>
           <select
+            value={tipo}
+            onChange={(e) => setTipo(e.target.value)}
+            className={cn(selectClass, "shrink-0")}
+            aria-label="Filtrar por tipo"
+          >
+            <option value="all">Todos los tipos</option>
+            {LEAD_TYPES.map((t) => (
+              <option key={t} value={t}>
+                {LEAD_TYPE_LABELS[t]}
+              </option>
+            ))}
+          </select>
+          <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
             className={cn(selectClass, "shrink-0")}
@@ -227,6 +244,7 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                   </div>
                   <div className="mt-2 flex flex-wrap items-center gap-1.5">
                     {l.zona ? <Badge tone="info">{ZONA_LABELS[l.zona] ?? l.zona}</Badge> : null}
+                    {l.lead_type === "blockchain" ? <Badge tone="info">Blockchain</Badge> : null}
                     {l.signals.length > 0 ? (
                       <Badge tone="warning">
                         {l.signals.length} {l.signals.length === 1 ? "señal" : "señales"}
@@ -324,6 +342,7 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                           </div>
                           <div className="mt-1 flex flex-wrap gap-1">
                             {l.zona ? <Badge tone="info">{ZONA_LABELS[l.zona] ?? l.zona}</Badge> : null}
+                            {l.lead_type === "blockchain" ? <Badge tone="info">Blockchain</Badge> : null}
                             {l.signals.length > 0 ? (
                               <Badge tone="warning">
                                 {l.signals.length} {l.signals.length === 1 ? "señal" : "señales"}

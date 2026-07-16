@@ -49,7 +49,15 @@ export async function getAuditLeads(): Promise<AuditLeadsResult> {
   for (const l of (topRes.data ?? []) as AuditLead[]) byId.set(l.id, l);
   for (const l of (pipeRes.data ?? []) as AuditLead[]) byId.set(l.id, l);
 
+  // España primero: dentro del orden por relevancia, los leads de España suben, luego
+  // Europa, luego global (el mercado objetivo de VaultAudit va por delante).
+  const zonaWeight = (z: AuditLead["zona"]): number =>
+    z === "es" ? 2 : z === "eu" ? 1 : 0;
+
   const leads = [...byId.values()].sort((a, b) => {
+    const za = zonaWeight(a.zona);
+    const zb = zonaWeight(b.zona);
+    if (zb !== za) return zb - za;
     const sa = a.score_claude ?? a.auditability_score ?? -1;
     const sb = b.score_claude ?? b.auditability_score ?? -1;
     if (sb !== sa) return sb - sa;
