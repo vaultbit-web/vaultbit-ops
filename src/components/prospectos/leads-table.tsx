@@ -16,6 +16,7 @@ import { updateAuditLeadStatus } from "~/lib/actions/prospectos";
 import {
   AUDIT_LEAD_STATUSES,
   AUDIT_LEAD_STATUS_LABELS,
+  CONTACT_CHANNEL_LABELS,
   LEAD_BUILDERS,
   LEAD_ZONAS,
   PIPELINE_ACTIVE_STATUSES,
@@ -26,6 +27,7 @@ import {
   scoreLevel,
   type AuditLead,
   type AuditLeadStatus,
+  type ContactChannel,
 } from "~/lib/leads/types";
 
 interface LeadsTableProps {
@@ -389,10 +391,23 @@ export function LeadsTable({ leads }: LeadsTableProps) {
   );
 }
 
-/** Detalle expandido: snippet, señales de seguridad, razones, outreach y metadatos. */
+/** Detalle expandido: snippet, señales, contacto, razones, outreach y metadatos. */
 function LeadDetail({ lead }: { lead: AuditLead }) {
   const hasOutreach =
     !!lead.outreach_dm || !!lead.outreach_email || !!lead.outreach_email_subject;
+  // Enlaces de contacto (los escribe /client-scout, OSINT pasivo), en orden de
+  // preferencia de canal; el preferido se destaca junto al borrador de mensaje.
+  const contactLinks: { channel: ContactChannel; href: string; label: string }[] = [];
+  if (lead.founder_linkedin)
+    contactLinks.push({ channel: "linkedin", href: lead.founder_linkedin, label: CONTACT_CHANNEL_LABELS.linkedin });
+  if (lead.founder_x)
+    contactLinks.push({ channel: "x", href: lead.founder_x, label: CONTACT_CHANNEL_LABELS.x });
+  if (lead.contact_email)
+    contactLinks.push({ channel: "email", href: `mailto:${lead.contact_email}`, label: lead.contact_email });
+  if (lead.founder_web)
+    contactLinks.push({ channel: "web", href: lead.founder_web, label: CONTACT_CHANNEL_LABELS.web });
+  if (lead.founder_github)
+    contactLinks.push({ channel: "github", href: lead.founder_github, label: CONTACT_CHANNEL_LABELS.github });
   return (
     <div className="mt-3 space-y-3 text-xs leading-relaxed">
       {lead.snippet ? (
@@ -441,6 +456,50 @@ function LeadDetail({ lead }: { lead: AuditLead }) {
               {s}
             </Badge>
           ))}
+        </div>
+      ) : null}
+
+      {lead.traccion ? (
+        <p className="text-anthracite-200">
+          <span className="text-[10px] uppercase tracking-[0.1em] text-anthracite-400 font-semibold mr-1.5">
+            Tracción
+          </span>
+          {lead.traccion}
+        </p>
+      ) : null}
+
+      {contactLinks.length > 0 ? (
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.1em] text-anthracite-400 font-semibold mb-1">
+            Contacto
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {contactLinks.map((c) => {
+              const preferred = lead.contact_channel === c.channel;
+              return (
+                <a
+                  key={c.channel}
+                  href={c.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors",
+                    preferred
+                      ? "border-brand-500/50 bg-brand-500/10 text-brand-300 hover:text-brand-200"
+                      : "border-anthracite-600/40 text-anthracite-100 hover:border-brand-500/40 hover:text-brand-300",
+                  )}
+                >
+                  {c.label}
+                  {preferred ? (
+                    <span className="text-[9px] uppercase tracking-[0.08em] text-brand-400">
+                      · preferido
+                    </span>
+                  ) : null}
+                  <ExternalLink className="h-3 w-3" strokeWidth={1.5} />
+                </a>
+              );
+            })}
+          </div>
         </div>
       ) : null}
 

@@ -54,6 +54,18 @@ export type LeadBuilder = (typeof LEAD_BUILDERS)[number];
 export const LEAD_ZONAS = ["es", "eu", "global"] as const;
 export type LeadZona = (typeof LEAD_ZONAS)[number];
 
+/** Canales de primer contacto, en orden de preferencia (linkedin > x > email > web > github). */
+export const CONTACT_CHANNELS = ["linkedin", "x", "email", "web", "github"] as const;
+export type ContactChannel = (typeof CONTACT_CHANNELS)[number];
+
+export const CONTACT_CHANNEL_LABELS: Record<ContactChannel, string> = {
+  linkedin: "LinkedIn",
+  x: "X / Twitter",
+  email: "Email",
+  web: "Web",
+  github: "GitHub",
+};
+
 export interface AuditLead {
   id: string;
   created_at: string;
@@ -72,6 +84,13 @@ export interface AuditLead {
   score_claude: number | null;
   qualify_reasons: string[];
   match_engine: MatchEngine;
+  founder_linkedin: string | null;
+  founder_x: string | null;
+  founder_github: string | null;
+  founder_web: string | null;
+  contact_email: string | null;
+  contact_channel: ContactChannel | null;
+  traccion: string | null;
   outreach_dm: string | null;
   outreach_email_subject: string | null;
   outreach_email: string | null;
