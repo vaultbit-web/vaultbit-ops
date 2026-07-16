@@ -13,7 +13,7 @@ A **real internal operations console running in production**, recently rebranded
 
 ## Architecture
 
-- `src/app/(app)/…` — authenticated route group, organized **by business** (Vaultbit Advisory, VaultAudit, personal brand): CRM, comercial, empleo, **prospectos**, ajustes
+- `src/app/(app)/…` — authenticated route group, organized **by business**: *Vaultbit Advisory* (the custody/inheritance consultancy) and *danielbrosed.com* (the personal brand — developer + security auditor, where the audit / smart-contract / prospecting work lives): CRM, comercial, empleo, **prospectos**, ajustes
 - `src/lib/actions/` — Server Actions are the only write path from the UI
 - `src/lib/queries/` — typed reads through the user-scoped Supabase client
 - `src/middleware.ts` — session refresh + auth enforcement on every request
@@ -22,7 +22,7 @@ A **real internal operations console running in production**, recently rebranded
 
 ## Client Scout — prospecting for the security-audit practice
 
-The `/prospectos` board is the client radar for **VaultAudit**, the app-level security-audit service. It shows how a consultancy can build an ethical, mostly-free lead pipeline:
+The `/prospectos` board is the client radar for the **app-level security-audit and smart-contract work** the operator does under his personal brand (**danielbrosed.com**), not a separate business. It shows how a solo practice can build an ethical, mostly-free lead pipeline:
 
 - An n8n workflow runs twice a day and collects **recently-launched web apps** from free, server-friendly sources (Show HN, Dev.to, and Spanish-market press), then runs a **passive fingerprint** on each: a single homepage GET, exactly what a browser does when you visit, to spot the build stack (Lovable/Bolt/Vercel/Netlify), whether Supabase/Firebase is used client-side, and missing security headers. From those **public signals only** it scores how much each app would benefit from a review.
 - A daily analyst step (an agent) researches the best leads with **passive OSINT** (verified against two public sources, nothing invented) and drafts a first message.

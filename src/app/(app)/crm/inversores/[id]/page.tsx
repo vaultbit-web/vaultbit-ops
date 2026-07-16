@@ -10,7 +10,6 @@ import { DetailField } from "~/components/detail-field";
 import { StatusSelect } from "~/components/status-select";
 import { NotesAndTasksSection } from "~/components/notes-tasks-section";
 import { CrmDocActions } from "~/components/crm-doc-actions";
-import { CalendarEventSection } from "~/components/calendar-event-section";
 import { CalLinkSection } from "~/components/cal-link-section";
 import { statusToneClass } from "~/components/status-tones";
 import { formatDateTime } from "~/lib/utils";
@@ -115,11 +114,6 @@ export default async function InvestorDetailPage({
 
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <CrmDocActions entityType="investor" entityId={inv.id} />
-        <CalendarEventSection
-          revalidatePath={`/crm/inversores/${inv.id}`}
-          defaultTitle={`Reunión con ${inv.name ?? inv.email}`}
-          attendeeEmail={inv.email}
-        />
         <CalLinkSection
           attendeeEmail={inv.email}
           attendeeName={inv.name}

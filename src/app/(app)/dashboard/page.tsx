@@ -21,7 +21,6 @@ import { KpiCard } from "~/components/kpi-card";
 import { Card, CardHeader, CardTitle, CardDescription } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { TaskItem } from "~/components/task-item";
-import { CalendarWidget } from "~/components/calendar-widget";
 import { MobileCollapsible } from "~/components/mobile-collapsible";
 import { formatNumber, relativeTime } from "~/lib/utils";
 
@@ -186,10 +185,6 @@ export default async function DashboardPage() {
             </ul>
           )}
         </Card>
-      </section>
-
-      <section className="mt-6 sm:mt-8">
-        <CalendarWidget />
       </section>
 
       <div className="mt-6 sm:mt-8">

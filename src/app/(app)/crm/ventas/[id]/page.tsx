@@ -15,7 +15,6 @@ import { DetailField } from "~/components/detail-field";
 import { StatusSelect } from "~/components/status-select";
 import { NotesAndTasksSection } from "~/components/notes-tasks-section";
 import { CrmDocActions } from "~/components/crm-doc-actions";
-import { CalendarEventSection } from "~/components/calendar-event-section";
 import { CalLinkSection } from "~/components/cal-link-section";
 import { DiagnosisSendButton } from "~/components/diagnosis-send-button";
 import { statusToneClass, STATUS_LABEL_OVERRIDES } from "~/components/status-tones";
@@ -146,11 +145,6 @@ export default async function FunnelLeadDetailPage({
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <DiagnosisSendButton leadId={lead.id} defaultTo={lead.email} />
         <CrmDocActions entityType="funnel_lead" entityId={lead.id} />
-        <CalendarEventSection
-          revalidatePath={`/crm/ventas/${lead.id}`}
-          defaultTitle={`Llamada con ${lead.name}`}
-          attendeeEmail={lead.email}
-        />
         <CalLinkSection
           attendeeEmail={lead.email}
           attendeeName={lead.name}

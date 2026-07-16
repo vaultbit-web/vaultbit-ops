@@ -10,7 +10,6 @@ import { DetailField } from "~/components/detail-field";
 import { StatusSelect } from "~/components/status-select";
 import { NotesAndTasksSection } from "~/components/notes-tasks-section";
 import { CrmDocActions } from "~/components/crm-doc-actions";
-import { CalendarEventSection } from "~/components/calendar-event-section";
 import { CalLinkSection } from "~/components/cal-link-section";
 import { statusToneClass } from "~/components/status-tones";
 import { formatDateTime } from "~/lib/utils";
@@ -110,11 +109,6 @@ export default async function LeadMagnetDetailPage({
 
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <CrmDocActions entityType="lead_magnet" entityId={sub.id} />
-        <CalendarEventSection
-          revalidatePath={`/crm/lead-magnet/${sub.id}`}
-          defaultTitle={`Llamada con ${sub.name ?? sub.email}`}
-          attendeeEmail={sub.email}
-        />
         <CalLinkSection
           attendeeEmail={sub.email}
           attendeeName={sub.name}

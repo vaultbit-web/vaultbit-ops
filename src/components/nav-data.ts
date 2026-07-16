@@ -8,11 +8,7 @@ import {
   Activity,
   Calculator,
   ScrollText,
-  Megaphone,
-  Mail,
   Sparkles,
-  PenSquare,
-  FileText,
   Settings,
   Rocket,
   BookOpen,
@@ -34,8 +30,9 @@ export interface NavGroup {
   items: NavItem[];
 }
 
-// Navegación organizada por NEGOCIO de Daniel Brosed (no por función), tal como
-// los presenta danielbrosed.com. No crea rutas nuevas: reagrupa las existentes.
+// Navegación por NEGOCIO REAL de Daniel Brosed. Las auditorías de seguridad, los
+// smart contracts y la prospección se hacen desde la MARCA PERSONAL (danielbrosed.com),
+// no como un negocio "VaultAudit" aparte. Solo se listan funcionalidades en uso.
 export const NAV_GROUPS: NavGroup[] = [
   {
     label: "General",
@@ -60,31 +57,19 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    label: "VaultAudit",
+    // Marca personal de Daniel: dev + auditor de seguridad (auditorías, smart
+    // contracts, prospección de clientes de auditoría).
+    label: "danielbrosed.com",
     items: [
       { label: "Prospección", href: "/prospectos", icon: Radar, badge: "★" },
-    ],
-  },
-  {
-    label: "Marca personal",
-    items: [
       { label: "Contenido", href: "/contenido/personal", icon: Sparkles },
       { label: "Empleo", href: "/empleo", icon: Briefcase, badge: "★" },
-      { label: "Marca empresa", href: "/contenido/empresa", icon: PenSquare, disabled: true, badge: "F4" },
-    ],
-  },
-  {
-    label: "Crecimiento",
-    items: [
-      { label: "Ads Meta", href: "/crecimiento/ads", icon: Megaphone, disabled: true, badge: "F2" },
-      { label: "Email automation", href: "/crecimiento/email", icon: Mail, disabled: true, badge: "F3" },
     ],
   },
   {
     label: "Sistema",
     items: [
       { label: "Ajustes", href: "/ajustes", icon: Settings },
-      { label: "Facturación Holded", href: "/facturacion", icon: FileText, disabled: true, badge: "Próximamente" },
     ],
   },
 ];

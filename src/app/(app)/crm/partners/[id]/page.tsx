@@ -15,7 +15,6 @@ import { DetailField } from "~/components/detail-field";
 import { StatusSelect } from "~/components/status-select";
 import { NotesAndTasksSection } from "~/components/notes-tasks-section";
 import { CrmDocActions } from "~/components/crm-doc-actions";
-import { CalendarEventSection } from "~/components/calendar-event-section";
 import { CalLinkSection } from "~/components/cal-link-section";
 import { statusToneClass } from "~/components/status-tones";
 import { formatDateTime } from "~/lib/utils";
@@ -114,11 +113,6 @@ export default async function PartnerDetailPage({
 
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <CrmDocActions entityType="partner" entityId={p.id} />
-        <CalendarEventSection
-          revalidatePath={`/crm/partners/${p.id}`}
-          defaultTitle={`Reunión con ${p.name}`}
-          attendeeEmail={p.email}
-        />
         <CalLinkSection
           attendeeEmail={p.email}
           attendeeName={p.name}
