@@ -360,7 +360,7 @@ export function AnalyticsReportPdf({
 
   return (
     <Document
-      title={`VaultBit Ops · Informe ejecutivo · ${rangeLabel}`}
+      title={`Centro de Operaciones · Informe ejecutivo · ${rangeLabel}`}
       author="VaultBit Advisory S.L."
       subject={`Informe de funnel y atribución · ${rangeLabel}`}
     >

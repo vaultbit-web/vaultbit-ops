@@ -33,7 +33,7 @@ export function LoginForm({ initialError }: { initialError?: string }) {
   const [pending, setPending] = React.useState(false);
   const [error, setError] = React.useState<string | null>(
     initialError === "not_allowed"
-      ? "Este email no tiene acceso a VaultBit Ops."
+      ? "Este email no tiene acceso al Centro de Operaciones."
       : null,
   );
 

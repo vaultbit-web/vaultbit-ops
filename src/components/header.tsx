@@ -75,12 +75,12 @@ export function Header({ userEmail }: HeaderProps) {
           </button>
 
           <Link
-            href="https://vaultbit.es"
+            href="https://danielbrosed.com"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-1.5 text-xs text-anthracite-400 hover:text-brand-400 transition-colors"
           >
-            <span>vaultbit.es</span>
+            <span>danielbrosed.com</span>
             <ExternalLink className="h-3 w-3" strokeWidth={1.5} />
           </Link>
         </div>

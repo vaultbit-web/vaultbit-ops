@@ -1,13 +1,13 @@
 {
-  "name": "VaultBit Ops",
-  "short_name": "VaultBit Ops",
-  "description": "Centro de operaciones interno de VaultBit Advisory.",
+  "name": "Centro de Operaciones · Daniel Brosed",
+  "short_name": "Operaciones",
+  "description": "Centro de operaciones de los negocios de Daniel Brosed.",
   "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#0D0F11",
-  "theme_color": "#0D0F11",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
   "lang": "es-ES",
   "categories": ["business", "productivity"],
   "icons": [

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { NAV_GROUPS } from "./nav-data";
 import { cn } from "~/lib/utils";
 import { Badge } from "./ui/badge";
+import { Brand } from "./brand/brand";
 
 interface SidebarProps {
   onNavigate?: () => void;
@@ -22,30 +23,8 @@ export function Sidebar({ onNavigate }: SidebarProps) {
       }}
     >
       {/* Brand */}
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-anthracite-600/30">
-        <div className="rounded-[10px] border border-brand-500/40 bg-brand-500/10 p-2">
-          <svg
-            viewBox="0 0 24 24"
-            className="h-5 w-5 text-brand-400"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-          >
-            <path d="M12 2 4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6l-8-4Z" />
-            <path d="m9 12 2 2 4-4" />
-          </svg>
-        </div>
-        <div className="leading-tight">
-          <p className="text-sm font-light text-fg">
-            VaultBit <span className="font-bold">Ops</span>
-          </p>
-          <p className="text-[10px] text-anthracite-400 uppercase tracking-wider">
-            Centro interno
-          </p>
-        </div>
+      <div className="px-5 py-5 border-b border-anthracite-600/30">
+        <Brand subtitle="Negocios de Daniel Brosed" />
       </div>
 
       {/* Nav */}
@@ -118,8 +97,8 @@ export function Sidebar({ onNavigate }: SidebarProps) {
       </nav>
 
       <div className="border-t border-anthracite-600/30 px-5 py-3">
-        <p className="text-[10px] text-anthracite-400">
-          v0.9 · F1.8 Cal.com
+        <p className="db-kicker text-[10px] text-anthracite-400">
+          v1.0 · Operaciones
         </p>
       </div>
     </aside>

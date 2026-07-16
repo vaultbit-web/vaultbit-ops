@@ -45,7 +45,7 @@ export function Dashboard90d({
     <div className="space-y-8">
       <header className="glow-orange relative">
         <p className="text-[10px] uppercase tracking-[0.12em] text-brand-400 font-semibold mb-2">
-          Vaultbit Ops · Captación 90 días
+          Vaultbit Advisory · Captación 90 días
         </p>
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-fg tracking-tight leading-tight">
           Espacio de Trabajo · <span className="font-bold">90 días</span>

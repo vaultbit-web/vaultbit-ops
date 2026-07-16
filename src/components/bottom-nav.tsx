@@ -3,15 +3,15 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, Briefcase, BarChart3, Menu } from "lucide-react";
+import { LayoutDashboard, Users, Briefcase, Radar, Menu } from "lucide-react";
 import { Sidebar } from "./sidebar";
 import { cn } from "~/lib/utils";
 
 const ITEMS = [
   { label: "Inicio", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Prospección", href: "/prospectos", icon: Radar },
   { label: "Ventas", href: "/crm/ventas", icon: Users },
   { label: "Empleo", href: "/empleo", icon: Briefcase },
-  { label: "Analítica", href: "/analytics", icon: BarChart3 },
 ] as const;
 
 /**

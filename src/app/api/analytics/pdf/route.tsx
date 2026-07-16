@@ -54,7 +54,7 @@ export async function GET(request: Request) {
   );
 
   const today = new Date().toISOString().slice(0, 10);
-  const filename = `VaultBit-Ops-Informe-${today}-${days}d.pdf`;
+  const filename = `Centro-Operaciones-Informe-${today}-${days}d.pdf`;
 
   return new NextResponse(new Uint8Array(buffer), {
     status: 200,

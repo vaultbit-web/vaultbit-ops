@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { cookies } from "next/headers";
 import "./globals.css";
 
-const THEME_BG = { dark: "#0d0f11", light: "#e8eaee" } as const;
+const THEME_BG = { dark: "#0a0a0a", light: "#faf9f6" } as const;
 
 async function getTheme(): Promise<"light" | "dark"> {
   const value = (await cookies()).get("vb-theme")?.value;
@@ -11,24 +11,18 @@ async function getTheme(): Promise<"light" | "dark"> {
 
 export const metadata: Metadata = {
   title: {
-    default: "VaultBit Ops",
-    template: "%s · VaultBit Ops",
+    default: "Centro de Operaciones · Daniel Brosed",
+    template: "%s · Daniel Brosed",
   },
-  description: "Centro de operaciones interno de VaultBit Advisory.",
+  description: "Centro de operaciones de los negocios de Daniel Brosed.",
   manifest: "/manifest.json",
-  applicationName: "VaultBit Ops",
+  applicationName: "Centro de Operaciones",
   robots: { index: false, follow: false },
-  icons: {
-    icon: [
-      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-96.png", sizes: "96x96", type: "image/png" },
-      { url: "/favicon-192.png", sizes: "192x192", type: "image/png" },
-    ],
-    apple: { url: "/apple-touch-icon.png", sizes: "180x180" },
-  },
+  // El favicon lo aporta ops/src/app/icon.svg (isotipo "db"), que Next.js
+  // inyecta automáticamente. Los PNG de PWA (manifest) se regeneran aparte.
   appleWebApp: {
     capable: true,
-    title: "VaultBit Ops",
+    title: "Centro de Operaciones",
     statusBarStyle: "black-translucent",
   },
 };
@@ -48,14 +42,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const theme = await getTheme();
   return (
     <html lang="es-ES" data-theme={theme} suppressHydrationWarning>
-      <head>
-        <link
-          rel="preconnect"
-          href="https://rsms.me"
-          crossOrigin="anonymous"
-        />
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-      </head>
       <body>{children}</body>
     </html>
   );

@@ -1,42 +1,54 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────
-   VaultBit Design Tokens — extraídos 1:1 de VaultBit_Style_Guide.md
+   Centro de Operaciones · Daniel Brosed — Design Tokens
+   Paleta y tipografía calcadas de danielbrosed.com (maqueta-v1).
+   La escala anthracite-* conserva su NOMBRE (830+ utilidades la usan)
+   pero sus hex se retunean a la paleta editorial de danielbrosed.com,
+   así todo el panel se re-skinea sin tocar componentes.
    ───────────────────────────────────────────────────────── */
 
 @theme {
-  /* ── Familia anthracite (escala de oscuros) ── */
-  --color-anthracite-950: #0d0f11;
-  --color-anthracite-900: #13171a;
-  --color-anthracite-800: #1c2126;
-  --color-anthracite-700: #252c33;
-  --color-anthracite-600: #2e3740;
-  --color-anthracite-400: #4a5562;
-  --color-anthracite-200: #8a95a0;
-  --color-anthracite-100: #c5cbd1;
+  /* ── Escala anthracite: superficies (bajos) → texto (altos) ── */
+  --color-anthracite-950: #0a0a0a; /* ink-black · fondo de app */
+  --color-anthracite-900: #141519; /* surface-dark · sidebar/inputs/sub */
+  --color-anthracite-800: #16181d; /* cards */
+  --color-anthracite-700: #1f2229; /* lift/hover */
+  --color-anthracite-600: #2a2d35; /* bordes */
+  --color-anthracite-400: #a8a8a1; /* texto atenuado (muted-dark) */
+  --color-anthracite-200: #c9c9c4; /* texto secundario */
+  --color-anthracite-100: #f5f4ef; /* texto primario (warm-white) */
 
-  /* ── Familia naranja (acento principal) ── */
-  --color-brand-600: #d4620e;
-  --color-brand-500: #f2761a;
-  --color-brand-400: #f5883a;
-  --color-brand-100: #fef0e6;
+  /* ── Ember (acento principal) ── */
+  --color-brand-600: #e06a10;
+  --color-brand-500: #fc8323;
+  --color-brand-400: #fd9a4d;
+  --color-brand-100: #fdece0;
+
+  /* ── Acentos secundarios de danielbrosed.com ── */
+  --color-cobalt: #0856ff; /* enlaces / foco / selección */
+  --color-cobalt-text: #6e99ff; /* enlace legible sobre oscuro */
+  --color-periwinkle: #b3bcff; /* acento lavanda / glow */
 
   /* ── Superficies claras ── */
-  --color-surface-light: #f8f9fa;
+  --color-surface-light: #faf9f6;
 
   /* ── Semánticos de tema (texto primario + líneas) ──
      Default = tema oscuro. El bloque [data-theme="light"] de abajo los
      reasigna para el tema claro sin tocar ningún componente. */
-  --color-fg: #ffffff;
-  --color-hairline: rgba(46, 55, 64, 0.4);
+  --color-fg: #f5f4ef;
+  --color-hairline: rgba(255, 255, 255, 0.07);
 
   /* ── Semánticos ── */
   --color-success: #16a34a;
   --color-warning: #d97706;
   --color-error: #dc2626;
 
-  /* ── Tipografía ── */
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  /* ── Tipografía (self-hosted, idéntica a danielbrosed.com) ── */
+  --font-sans: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  --font-display: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
 
   /* ── Radii ── */
   --radius-sm: 6px;
@@ -56,24 +68,25 @@
    ───────────────────────────────────────────────────────── */
 
 :root[data-theme="light"] {
-  /* Superficies: 950 = fondo de app · 900 = sidebar/inputs/sub · 800 = cards/lift.
+  /* Paper de danielbrosed.com. 950 = fondo · 900 = sidebar/inputs · 800 = cards.
      Mantiene la dirección del tema oscuro (la elevación aclara). */
-  --color-anthracite-950: #e8eaee;
-  --color-anthracite-900: #f2f4f6;
-  --color-anthracite-800: #ffffff;
-  --color-anthracite-700: #d6dbe1;
-  --color-anthracite-600: #e3e7ec;
+  --color-anthracite-950: #faf9f6; /* paper */
+  --color-anthracite-900: #f1efe8; /* paper-2 · sidebar/inputs/sub */
+  --color-anthracite-800: #ffffff; /* cards */
+  --color-anthracite-700: #d9d5cc; /* bordes/hover */
+  --color-anthracite-600: #e8e5dd; /* bordes suaves */
   /* Texto e iconos: 400 = atenuado · 200 = secundario · 100 = primario */
-  --color-anthracite-400: #6b7280;
-  --color-anthracite-200: #4b5563;
-  --color-anthracite-100: #1c2126;
+  --color-anthracite-400: #565651; /* muted-light */
+  --color-anthracite-200: #3a3a37;
+  --color-anthracite-100: #15171c; /* ink */
 
   /* Semánticos de tema */
-  --color-fg: #13171a;
-  --color-hairline: rgba(15, 23, 42, 0.1);
+  --color-fg: #15171c;
+  --color-hairline: rgba(21, 23, 28, 0.1);
 
-  /* Acento naranja un punto más oscuro para contraste AA sobre claro */
-  --color-brand-400: #d4620e;
+  /* Ember/cobalt un punto más oscuros para contraste AA sobre claro */
+  --color-brand-400: #a84a05; /* ember-text-light */
+  --color-cobalt-text: #0856ff;
 }
 
 /* Utilidades hardcodeadas que asumían fondo oscuro — variante clara */
@@ -127,8 +140,16 @@
     min-height: 100dvh;
   }
 
+  /* Titulares con la display de danielbrosed.com (Bricolage Grotesque). */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
   ::selection {
-    background: rgba(242, 118, 26, 0.35);
+    background: rgba(8, 86, 255, 0.4);
     color: #fff;
   }
 
@@ -160,7 +181,7 @@
   input:focus-visible,
   textarea:focus-visible,
   button:focus-visible {
-    outline: 2px solid rgba(242, 118, 26, 0.5);
+    outline: 2px solid rgba(8, 86, 255, 0.6);
     outline-offset: 2px;
   }
 }
@@ -179,7 +200,7 @@
     content: "";
     position: absolute;
     inset: -20%;
-    background: radial-gradient(ellipse at center, rgba(242, 118, 26, 0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, rgba(252, 131, 35, 0.1) 0%, transparent 70%);
     pointer-events: none;
     z-index: -1;
   }
@@ -194,16 +215,16 @@
 
   /* Border glow naranja para cards destacadas (Style Guide §9.4) */
   .border-glow-orange {
-    border: 1px solid rgba(242, 118, 26, 0.4);
+    border: 1px solid rgba(252, 131, 35, 0.4);
     box-shadow:
-      0 0 20px rgba(242, 118, 26, 0.1),
+      0 0 20px rgba(252, 131, 35, 0.12),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   /* Card oscura principal (Style Guide §6.1) */
   .card-dark {
     background: var(--color-anthracite-800);
-    border: 1px solid rgba(46, 55, 64, 0.4);
+    border: 1px solid var(--color-hairline);
     border-radius: var(--radius-xl);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
@@ -259,7 +280,7 @@
     background: white;
   }
   .vb-checkbox:focus-visible {
-    outline: 2px solid rgba(242, 118, 26, 0.5);
+    outline: 2px solid rgba(8, 86, 255, 0.6);
     outline-offset: 2px;
   }
 
@@ -344,5 +365,127 @@
 @utility vb-anim-pop {
   &[data-state="open"] {
     animation: vb-pop-in 0.2s ease-out;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   Fuentes self-hosted (calcadas de danielbrosed.com / maqueta-v1).
+   Subsets latinos .woff2 servidos desde /public/fonts.
+   ───────────────────────────────────────────────────────── */
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/bricolage-grotesque-400_800.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/hanken-grotesk-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/hanken-grotesk-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/hanken-grotesk-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/instrument-serif-400-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-500.woff2") format("woff2");
+}
+
+/* ─────────────────────────────────────────────────────────
+   Firma de danielbrosed.com: utilidades de marca.
+   .db-kicker (JetBrains Mono uppercase), acento serif italic,
+   glow tricolor del isotipo (orbA/B/C).
+   ───────────────────────────────────────────────────────── */
+
+@layer utilities {
+  .db-kicker {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+  }
+  .db-serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+  /* Glow ember/periwinkle sutil para cabeceras de sección (no invasivo). */
+  .db-glow {
+    position: relative;
+    isolation: isolate;
+  }
+  .db-glow::before {
+    content: "";
+    position: absolute;
+    inset: -40% -10% auto -10%;
+    height: 140%;
+    background:
+      radial-gradient(60% 60% at 20% 0%, rgba(179, 188, 255, 0.1), transparent 70%),
+      radial-gradient(60% 60% at 80% 10%, rgba(252, 131, 35, 0.1), transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+/* Órbitas de las tres luces del isotipo "db" (portado de maqueta-v1). */
+@keyframes orbA {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(-12%, 14%) scale(1.12);
+  }
+}
+@keyframes orbB {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(14%, -10%) scale(1.1);
+  }
+}
+@keyframes orbC {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(8%, 12%) scale(0.92);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .db-orb {
+    animation: none !important;
   }
 }
