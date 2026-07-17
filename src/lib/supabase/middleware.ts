@@ -35,11 +35,17 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // Rutas públicas: /login, /auth/callback, /api/health
+  // Rutas públicas ante el middleware: se autentican ELLAS SOLAS y no llevan cookie
+  // de sesión Supabase, así que no deben pasar por el guard getUser()+allowlist:
+  //  - /api/webhooks/* : webhooks externos (Cal.com) verificados por HMAC en el handler.
+  //  - /api/meta/sync  : cron con Bearer secret (o sesión+allowlist dentro del handler).
+  // (Sin esto, un POST externo sin cookie se redirige a /login y nunca llega al handler.)
   const isPublic =
     pathname.startsWith("/login") ||
     pathname.startsWith("/auth") ||
     pathname.startsWith("/api/health") ||
+    pathname.startsWith("/api/webhooks/") ||
+    pathname === "/api/meta/sync" ||
     pathname.startsWith("/_next") ||
     pathname === "/manifest.json" ||
     pathname.match(/\.(png|jpg|jpeg|svg|ico|webmanifest)$/);

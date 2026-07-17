@@ -14,10 +14,11 @@ export const dynamic = "force-dynamic";
  * Recibe webhooks de Cal.com (BOOKING_CREATED / RESCHEDULED / CANCELLED ...)
  * y persiste el booking en `cal_bookings` (upsert por cal_booking_id).
  *
- * Auth: si está configurada `CAL_COM_WEBHOOK_SECRET`, validamos la firma
- * HMAC-SHA256 de Cal.com en el header `X-Cal-Signature-256`. Si no hay
- * secret configurado, aceptamos sin firmar (no recomendado en producción
- * pero útil durante el setup inicial).
+ * Auth (FAIL-CLOSED): se exige `CAL_COM_WEBHOOK_SECRET` y se valida la firma
+ * HMAC-SHA256 de Cal.com en el header `X-Cal-Signature-256`. Sin secret no se
+ * puede verificar la firma → se rechaza (no se acepta nada sin firmar).
+ * Configura el MISMO valor en Cal.com (webhook) y en el entorno de Ops.
+ * Esta ruta está en la allowlist del middleware (se autentica ella sola por HMAC).
  */
 export async function POST(request: Request) {
   const limited = enforceRateLimit(request, "cal-webhook", { max: 240, windowMs: 60_000 });
@@ -26,25 +27,27 @@ export async function POST(request: Request) {
   const rawBody = await request.text();
   const secret = process.env.CAL_COM_WEBHOOK_SECRET;
 
-  if (secret) {
-    const signatureHeader = request.headers.get("x-cal-signature-256");
-    if (!signatureHeader) {
-      console.warn("[cal/webhook] missing signature header");
-      return NextResponse.json({ error: "Missing signature" }, { status: 401 });
-    }
-    const expected = createHmac("sha256", secret).update(rawBody).digest("hex");
-    const provided = signatureHeader.startsWith("sha256=")
-      ? signatureHeader.slice(7)
-      : signatureHeader;
-    try {
-      const a = Buffer.from(expected, "hex");
-      const b = Buffer.from(provided, "hex");
-      if (a.length !== b.length || !timingSafeEqual(a, b)) {
-        return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
-      }
-    } catch {
+  // Fail-closed: sin secreto configurado no se puede verificar → se rechaza.
+  if (!secret) {
+    console.error("[cal/webhook] CAL_COM_WEBHOOK_SECRET no configurado; rechazando (fail-closed)");
+    return NextResponse.json({ error: "Webhook not configured" }, { status: 503 });
+  }
+  const signatureHeader = request.headers.get("x-cal-signature-256");
+  if (!signatureHeader) {
+    return NextResponse.json({ error: "Missing signature" }, { status: 401 });
+  }
+  const expected = createHmac("sha256", secret).update(rawBody).digest("hex");
+  const provided = signatureHeader.startsWith("sha256=")
+    ? signatureHeader.slice(7)
+    : signatureHeader;
+  try {
+    const a = Buffer.from(expected, "hex");
+    const b = Buffer.from(provided, "hex");
+    if (a.length !== b.length || !timingSafeEqual(a, b)) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
+  } catch {
+    return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
   let body: CalWebhookPayload;
@@ -88,19 +91,11 @@ export async function POST(request: Request) {
   const eventTypeSlug = p.eventType?.slug ?? p.type ?? null;
   const title = p.title ?? p.eventType?.title ?? "Reunión";
 
-  // El webhook NO tiene cookies de sesión Supabase, pero RLS permite escritura
-  // a anon client porque la policy permite `authenticated`. Para webhook usamos
-  // service role o anon — usamos anon que pasa por la policy via INSERT.
-  // Como nuestra policy exige `authenticated`, hacemos el upsert con anon
-  // explícitamente NO funcionará. Saltamos RLS llamando al cliente con
-  // service_role NO disponible aquí — alternativa: llamar a una RPC con SECURITY DEFINER.
-  //
-  // Práctico: la policy también permite escritura con anon si la cambiamos.
-  // Por simplicidad: añadimos service_role implícito bypassing RLS via función.
-  //
-  // Solución limpia: insertamos con el client normal (que es anon en webhook),
-  // y si falla RLS, registramos error pero devolvemos 200 a Cal.com para no
-  // generar reintentos infinitos.
+  // El webhook usa el cliente anon (no hay sesión). La escritura en cal_bookings
+  // está permitida por la policy anon INSERT/UPDATE de la tabla (ver migración).
+  // La defensa real de esta ruta es la verificación HMAC de arriba (fail-closed).
+  // Follow-up de seguridad: enrutar esta escritura por un RPC SECURITY DEFINER para
+  // que la tabla no necesite escritura anon abierta.
   const supabase = await createClient();
 
   const insertPayload = {
