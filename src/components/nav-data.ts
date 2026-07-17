@@ -14,6 +14,7 @@ import {
   BookOpen,
   Briefcase,
   Radar,
+  Linkedin,
   type LucideIcon,
 } from "lucide-react";
 
@@ -62,6 +63,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "danielbrosed.com",
     items: [
       { label: "Prospección", href: "/prospectos", icon: Radar, badge: "★" },
+      { label: "Contactos LinkedIn", href: "/crm/linkedin-contactos", icon: Linkedin, badge: "★" },
       { label: "Contenido", href: "/contenido/personal", icon: Sparkles },
       { label: "Empleo", href: "/empleo", icon: Briefcase, badge: "★" },
     ],
