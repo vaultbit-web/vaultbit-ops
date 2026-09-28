@@ -57,7 +57,7 @@ The console is not runnable without a configured Supabase project, so these are 
 
 ## How it was built
 
-Solo founder + Claude Code, in phased feature branches: scaffold & auth → CRM core → quotes/contracts + pricing engine → boards (acquisition, jobs, prospecting) → rebrand to the danielbrosed.com identity. Every phase ends with a quality review and a **security review** before merge.
+Built solo, in phased feature branches: scaffold & auth → CRM core → quotes/contracts + pricing engine → boards (acquisition, jobs, prospecting) → rebrand to the danielbrosed.com identity. Every phase ends with a quality review and a **security review** before merge.
 
 ## Live
 
